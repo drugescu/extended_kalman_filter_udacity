@@ -27,6 +27,16 @@ class Tools {
    */
   Eigen::MatrixXd CalculateJacobian(const Eigen::VectorXd& x_state);
 
+  /**
+   * My own helper method to convert from Cartesian to Polar coordinates to calculate y for radar
+   */
+  Eigen::VectorXd ConvertFromCartesianToPolar(const Eigen::VectorXd& cart_coords);
+  
+  /**
+   * My own helper method to convert from Polar to Cartesian coordinates to calculate actual z from radar data
+   */
+  Eigen::VectorXd ConvertFromPolarToCartesian(const Eigen::VectorXd& polar_coords);
+
 };
 
 #endif  // TOOLS_H_

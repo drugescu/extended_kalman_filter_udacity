@@ -88,8 +88,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   fflush(stdout);
   
   // Protect against zero
-  for (int i = 0; i < 4; i++)
-    if (inputs(i) < 0.00001) inputs(i) = 0.00001;
+  //for (int i = 0; i < 4; i++)
+  //  if (inputs(i) < 0.0000001) inputs(i) = 0.0000001;
 
   std::cout << "Protected inputs against zero: \n" << inputs << std::endl << std::endl;
   fflush(stdout);

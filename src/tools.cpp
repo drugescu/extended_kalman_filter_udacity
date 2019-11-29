@@ -86,6 +86,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   return Hj;
 }
 
+// This below is used in kalman_filter.cpp
 VectorXd Tools::ConvertFromCartesianToPolar(const VectorXd& cart_coords) {
   
   // Extract cartesian coordinates from x
@@ -93,12 +94,16 @@ VectorXd Tools::ConvertFromCartesianToPolar(const VectorXd& cart_coords) {
   double py = cart_coords(1);
   double vx = cart_coords(2);
   double vy = cart_coords(3);
-  
+
+  if (px < 0.0000001) px = 0.0000001;
+  if (py < 0.0000001) py = 0.0000001;
+
   double px2 = px * px;
   double py2 = py * py;
   
   // Magnitude
   double rho = sqrt(px2 + py2);
+  if (rho < 0.0000001) rho = 0.0000001;
   
   //Angle
   double phi = atan2(py, px);
@@ -116,6 +121,7 @@ VectorXd Tools::ConvertFromCartesianToPolar(const VectorXd& cart_coords) {
   return coords_polar;
 }
 
+// This below is used in Fu`sionEKF.cpp
 VectorXd Tools::ConvertFromPolarToCartesian(const VectorXd& polar_coords) {
   
   // Extract polar coordinates
@@ -126,7 +132,7 @@ VectorXd Tools::ConvertFromPolarToCartesian(const VectorXd& polar_coords) {
   double rhod = polar_coords(2);
   
   // Clamp rho
-  if (rho < 0.00001) rho = 0.00001;
+  if (rho < 0.000001) rho = 0.000001;
 
   // Tranform from polar to cartesian
   double px = rho * cos(phi);

@@ -33,6 +33,8 @@ void KalmanFilter::Predict() {
   // P' = F*P*Ft + Q
   MatrixXd Ft = F_.transpose();
   P_ = F_ * P_ * Ft + Q_;
+
+  std::cout << "Predict :\n x_ = " << x_ << std::endl << "P_ = " << P_ << std::endl;
 }
 
 void KalmanFilter::Update(const VectorXd &z) {
@@ -51,11 +53,12 @@ void KalmanFilter::Update(const VectorXd &z) {
   MatrixXd K = P_ * Ht * Sinv;
   
   // x = x' + K*y
-  x_ = x_ + K * y;
+  x_ = x_ + (K * y);
   
   // P = (I - K*H) * P'
   MatrixXd I = MatrixXd::Identity(4, 4);
   P_ = (I - K * H_) * P_;
+  std::cout << "Update KF:\n x_ = " << x_ << std::endl << "P_ = " << P_ << std::endl;
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
@@ -63,7 +66,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
    * TODO: update the state by using Extended Kalman Filter equations
    */
 
-  Tools tools = Tools();
+  Tools tools;
   
   //  KF             EKF
   // ------------------------
@@ -98,4 +101,6 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   // P=(I-KH)P'
   MatrixXd I = MatrixXd::Identity(4, 4);
   P_ = (I - K * Hj) * P_;
+  
+  std::cout << "Update EKF:\n x_ = " << x_ << std::endl << "P_ = " << P_ << std::endl;
 }

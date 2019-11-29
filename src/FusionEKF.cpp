@@ -66,6 +66,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   inputs << measurement_pack.raw_measurements_[0], 
             measurement_pack.raw_measurements_[1], 
             measurement_pack.raw_measurements_[2];
+  std::cout << "ProcessMeasurement inputs: " << inputs << std::endl;
   
   // Protect against zero
   for (int i = 0; i < 3; i++)

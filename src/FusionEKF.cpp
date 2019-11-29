@@ -136,7 +136,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
     // 0. Get timestamps first
-  auto dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;   // in seconds
+  double dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;   // in seconds
   previous_timestamp_  = measurement_pack.timestamp_;
   
   auto noise_ax = 9.0f;
@@ -150,9 +150,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
              0, 0,  0,  1;
     
   // 2. Set the process covariance matrix Q
-  float dt2 =  dt * dt;
-  float dt3 =  dt * dt2;
-  float dt4 = dt2 * dt2;
+  auto dt2 =  dt * dt;
+  auto dt3 =  dt * dt2;
+  auto dt4 = dt2 * dt2;
   ekf_.Q_ = MatrixXd(4, 4);
   ekf_.Q_ << dt4/4*noise_ax,     0,        dt3/2*noise_ax,        0,
                0,            dt4/4*noise_ay,         0,      dt3/2*noise_ay,

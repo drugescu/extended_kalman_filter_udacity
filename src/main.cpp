@@ -112,7 +112,7 @@ int main() {
           // Call ProcessMeasurement(meas_package) for Kalman filter
           fusionEKF.ProcessMeasurement(meas_package);       
 
-          std::cout << "Processed Measurement: \n" << meas_package << std::endl;
+          std::cout << "Processed Measurement: \n" << meas_package.raw_measurements_ << std::endl;
 
           // Push the current estimated x,y positon from the Kalman filter's 
           //   state vector

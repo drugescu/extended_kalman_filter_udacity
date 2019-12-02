@@ -72,7 +72,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   double c3 = (c1*c2);
 
   // check division by zero
-  if (fabs(c1) < 0.0001) {
+  if (fabs(c1) < EPS) {
     std::cout << "CalculateJacobian () - Error - Division by Zero" << std::endl;
     return Hj;
   }
@@ -82,7 +82,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
       -(py/c1), (px/c1), 0, 0,
       py*(vx*py - vy*px)/c3, px*(px*vy - py*vx)/c3, px/c2, py/c2;
 
-  std::cout << "tools.cpp: Calculated jacobian: \n" << x_state << "\n -> \n" << Hj << "\n\n";
+  //std::cout << "tools.cpp: Calculated jacobian: \n" << x_state << "\n -> \n" << Hj << "\n\n";
   return Hj;
 }
 
@@ -95,33 +95,35 @@ VectorXd Tools::ConvertFromCartesianToPolar(const VectorXd& cart_coords) {
   double vx = cart_coords(2);
   double vy = cart_coords(3);
 
-  if (px < 0.0000001) px = 0.0000001;
-  if (py < 0.0000001) py = 0.0000001;
-
   double px2 = px * px;
   double py2 = py * py;
   
   // Magnitude
   double rho = sqrt(px2 + py2);
-  if (rho < 0.0000001) rho = 0.0000001;
   
   //Angle
-  double phi = atan2(py, px);
+  double phi = 0.0;
+  if (px < EPS) 
+    phi = atan2(py, EPS);
+  else 
+    phi = atan2(py, px);
   
   // Rho dot
-  double rhod = (px * vx + py * vy * 1.0) / rho;
+  double rhod = 0.0;
+  if (rho < EPS)
+    rhod = (px * vx + py * vy * 1.0) / EPS;
+  else
+    rhod = (px * vx + py * vy * 1.0) / rho;
   
   // Return results
-  //VectorXd coords_polar(4);
-  //coords_polar << rho, phi, rhod, 0;
   VectorXd coords_polar(3);
   coords_polar << rho, phi, rhod;
 
-  std::cout << "tools.cpp: convert cart to polar: \n" << cart_coords << "\n -> \n" << coords_polar << "\n\n";
+  //std::cout << "tools.cpp: convert cart to polar: \n" << cart_coords << "\n -> \n" << coords_polar << "\n\n";
   return coords_polar;
 }
 
-// This below is used in Fu`sionEKF.cpp
+// This below is used in FusionEKF.cpp
 VectorXd Tools::ConvertFromPolarToCartesian(const VectorXd& polar_coords) {
   
   // Extract polar coordinates
@@ -132,17 +134,19 @@ VectorXd Tools::ConvertFromPolarToCartesian(const VectorXd& polar_coords) {
   double rhod = polar_coords(2);
   
   // Clamp rho
-  if (rho < 0.000001) rho = 0.000001;
+  //if (rho < 0.000001) rho = 0.000001;
 
   // Tranform from polar to cartesian
   double px = rho * cos(phi);
   double py = rho * sin(phi);
+  double vx = rhod * cos(phi);
+  double vy = rhod * sin(phi);
     
   // Output cartesian coordinates - no velocity
   VectorXd coords_cart(4);
-  coords_cart << px, py, 0, 0;
+  coords_cart << px, py, vx, vy;
   
-  std::cout << "tools.cpp: convert polar to cart: \n" << polar_coords << " to " << coords_cart << "\n\n";
+  //std::cout << "tools.cpp: convert polar to cart: \n" << polar_coords << " to " << coords_cart << "\n\n";
   return coords_cart;
 
 }

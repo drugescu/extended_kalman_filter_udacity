@@ -38,6 +38,7 @@ class Tools {
    */
   Eigen::VectorXd ConvertFromPolarToCartesian(const Eigen::VectorXd& polar_coords);
 
+  const double EPS = 0.000001;
 };
 
 #endif  // TOOLS_H_

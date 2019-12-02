@@ -107,12 +107,12 @@ int main() {
           gt_values(3) = vy_gt;
           ground_truth.push_back(gt_values);
           
-          std::cout << "Ground Truth: \n" << gt_values << std::endl << std::endl;
+         // std::cout << "Ground Truth: \n" << gt_values << std::endl << std::endl;
           
           // Call ProcessMeasurement(meas_package) for Kalman filter
           fusionEKF.ProcessMeasurement(meas_package);       
 
-          std::cout << "\nProcessed Measurement: \n" << meas_package.raw_measurements_ << std::endl;
+          //std::cout << "\nProcessed Measurement: \n" << meas_package.raw_measurements_ << std::endl;
 
           // Push the current estimated x,y positon from the Kalman filter's 
           //   state vector
@@ -131,12 +131,12 @@ int main() {
         
           estimations.push_back(estimate);
 
-          std::cout << "\nEstimate = \n" << estimate << std::endl;
+          //std::cout << "\nEstimate = \n" << estimate << std::endl;
 
           VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 
-          std::cout << "\nRMSE calculated = \n" << RMSE << std::endl;
-          std::cout << "\n\n ------------------------------------------------------------------------------- \n\n";
+          //std::cout << "\nRMSE calculated = \n" << RMSE << std::endl;
+          //std::cout << "\n\n ------------------------------------------------------------------------------- \n\n";
 
           json msgJson;
           msgJson["estimate_x"] = p_x;

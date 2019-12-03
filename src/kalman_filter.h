@@ -15,7 +15,7 @@ class KalmanFilter {
    * Destructor
    */
   virtual ~KalmanFilter();
-
+  
   /**
    * Init Initializes Kalman filter
    * @param x_in Initial state
@@ -46,7 +46,7 @@ class KalmanFilter {
    * @param z The measurement at k+1
    */
   void UpdateEKF(const Eigen::VectorXd &z);
-
+  
   // state vector
   Eigen::VectorXd x_;
 

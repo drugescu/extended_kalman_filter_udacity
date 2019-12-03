@@ -21,7 +21,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
   //  * the estimation vector size should not be zero
   //  * the estimation vector size should equal ground truth vector size
   if (estimations.size() != ground_truth.size()
-      || estimations.size() == 0) {
+      || estimations.size() == 0 || ground_truth.size() == 0) {
     std::cout << "Invalid estimation or ground_truth data" << std::endl;
     return rmse;
   }
@@ -103,17 +103,11 @@ VectorXd Tools::ConvertFromCartesianToPolar(const VectorXd& cart_coords) {
   
   //Angle
   double phi = 0.0;
-  if (px < EPS) 
-    phi = atan2(py, EPS);
-  else 
-    phi = atan2(py, px);
+  phi = atan2(py, px);
   
   // Rho dot
   double rhod = 0.0;
-  if (rho < EPS)
-    rhod = (px * vx + py * vy * 1.0) / EPS;
-  else
-    rhod = (px * vx + py * vy * 1.0) / rho;
+  rhod = (px * vx + py * vy * 1.0) / rho;
   
   // Return results
   VectorXd coords_polar(3);
@@ -138,7 +132,11 @@ VectorXd Tools::ConvertFromPolarToCartesian(const VectorXd& polar_coords) {
 
   // Tranform from polar to cartesian
   double px = rho * cos(phi);
+  if (px < EPS) px = EPS;
+  
   double py = rho * sin(phi);
+  if (py < EPS) py = EPS;
+
   double vx = rhod * cos(phi);
   double vy = rhod * sin(phi);
     
